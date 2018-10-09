@@ -6,9 +6,22 @@ fun main(args: Array<String>){
             Chocolate("Leche", 10, "Granada")
     ))
     val forrest = Forrest<Chocolate>(boxOfChocolate)
-    println(forrest.pick())
-    println(forrest.pick())
-    println(forrest.pick())
-    println(forrest.pick())
+    println("Caja de chocolates:\n")
+    println(forrest.pick()+"\n")
+    println(forrest.pick()+"\n")
+    println(forrest.pick()+"\n")
+    println(forrest.pick()+"\n")
+
+    val boxOfCandy = Box<Candy>(arrayListOf<Candy>(
+            Chocolate("Mani", 8, "Crunch"),
+            Gomita("Acida",4, "limon"),
+            Gomita("Azucar",11, "Cereza")
+    ))
+    val Gump = Forrest<Candy>(boxOfCandy)
+    println("\nCaja de dulces:\n")
+    println(Gump.pick()+"\n")
+    println(Gump.pick()+"\n")
+    println(Gump.pick()+"\n")
+    println(Gump.pick()+"\n")
 
 }
