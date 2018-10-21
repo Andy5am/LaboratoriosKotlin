@@ -64,28 +64,36 @@ fun main(args: Array<String>){
             println("$numero: $i")
             numero++
         }
-        println("Elija su heroe")
-        try {
-            var eleccion= readLine()!!.toInt()-1
-            miPartido.anadirHeroeRadiant(Heroes[eleccion])
-            Heroes.removeAt(eleccion)
-        }catch (e:Exception){
-            println("Escriba un numero de heroe")
-        }
+        var elejido = false
+        do {
+            println("Elija su heroe")
+            try {
+                var eleccion = readLine()!!.toInt() - 1
+                miPartido.anadirHeroeRadiant(Heroes[eleccion])
+                Heroes.removeAt(eleccion)
+                elejido = true
+            } catch (e: Exception) {
+                println("Escriba un numero de heroe")
+            }
+        }while (!elejido)
         println("Seleccion heroes Dire")
         numero = 1
         for (i in Heroes){
             println("$numero: $i")
             numero++
         }
-        println("Elija su heroe")
-        try {
-            var eleccion = readLine()!!.toInt() - 1
-            miPartido.anadirHeroeDire(Heroes[eleccion])
-            Heroes.removeAt(eleccion)
-        }catch (e:Exception){
-            println("Escriba un numero de heroe")
-        }
+        elejido = false
+        do {
+            println("Elija su heroe")
+            try {
+                var eleccion = readLine()!!.toInt() - 1
+                miPartido.anadirHeroeDire(Heroes[eleccion])
+                Heroes.removeAt(eleccion)
+                elejido = true
+            } catch (e: Exception) {
+                println("Escriba un numero de heroe")
+            }
+        }while (!elejido)
     }
     println(miPartido.empezarJuego())
     var ganador = false
@@ -145,10 +153,16 @@ fun main(args: Array<String>){
                 var confirmar = readLine()!!
                 esRadiant = confirmar!= "si"
                 if (confirmar =="si" || confirmar!== "no"){
-                    if (esRadiant){
+                    if (!esRadiant){
                         println(miPartido.radiantGana())
+                        if (!miPartido.hayTorresDire()){
+                            ganador = true
+                        }
                     }else{
                         println(miPartido.direGana())
+                        if (!miPartido.hayTorresRadiant()){
+                            ganador=true
+                        }
                     }
                 }else{
                     println("Escriba si o no")
