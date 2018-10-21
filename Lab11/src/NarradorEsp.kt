@@ -1,4 +1,4 @@
-class NarradorEsp(val idioma: String):Narrable{
+class NarradorEsp():Narrable{
     override fun narrar(evento:String):String {
         var mensaje = ""
         if (evento == "bienvenida") {

@@ -1,73 +1,78 @@
 import java.util.*
+import kotlin.math.E
 
 class Partido<T> (
-        var Radiant:Equipo,
-        var Dire:Equipo,
         var narrador:T
-) where T:NarradorEsp{
+) where T : Narrable{
+    private var Radiant:Equipo = Equipo()
+    private var Dire:Equipo = Equipo()
     fun bienvenida():String{
         var evento = "bienvenida"
-        return this.narrador.narrar(evento)
+        return narrar(narrador,evento)
     }
-    fun empezarJuego(){
+    fun empezarJuego():String{
         var evento = "empezar"
-        this.narrador.narrar(evento)
+        return narrar(narrador,evento)
     }
-    fun ocurrioUnKill(equipo:Equipo){
+    fun ocurrioUnKill(esRadiant:Boolean):String{
         var evento = "kill"
-        narrador.narrar(evento)
-        if (equipo== Radiant){
+        if (!esRadiant){
             Radiant.heroes.removeAt(Random().nextInt(Radiant.heroes.size))
         }else{
             Dire.heroes.removeAt(Random().nextInt(Dire.heroes.size))
         }
+        return narrar(narrador,evento)
     }
-    fun OcurrieronDosOMasKills(kills:Int,equipo: Equipo){
-        var evento= "kills"
-        narrador.narrar(evento)
-        if (equipo==Radiant){
-            when(kills){
-                2->{
-                    for (i in 0 until kills) {
-                        Radiant.heroes.removeAt(Random().nextInt(Radiant.heroes.size))
+    fun OcurrieronDosOMasKills(kills:Int,esRadiant: Boolean):String? {
+        if (kills>0) {
+            var evento = "kills"
+            if (!esRadiant) {
+                when (kills) {
+                    2 -> {
+                        for (i in 0 until kills) {
+                            Radiant.heroes.removeAt(Random().nextInt(Radiant.heroes.size))
+                        }
+                    }
+                    3 -> {
+                        for (i in 0 until kills) {
+                            Radiant.heroes.removeAt(Random().nextInt(Radiant.heroes.size))
+                        }
+                    }
+                    4 -> {
+                        for (i in 0 until kills) {
+                            Radiant.heroes.removeAt(Random().nextInt(Radiant.heroes.size))
+                        }
                     }
                 }
-                3->{
-                    for (i in 0 until kills) {
-                        Radiant.heroes.removeAt(Random().nextInt(Radiant.heroes.size))
-                    }
-                }
-                4-> {
-                    for (i in 0 until kills) {
-                        Radiant.heroes.removeAt(Random().nextInt(Radiant.heroes.size))
-                    }
-                }
-            }
 
-        }else{
-            when(kills){
-                2->{
-                    for (i in 0 until kills) {
-                        Dire.heroes.removeAt(Random().nextInt(Dire.heroes.size))
+            } else {
+                when (kills) {
+                    2 -> {
+                        for (i in 0 until kills) {
+                            Dire.heroes.removeAt(Random().nextInt(Dire.heroes.size))
+                        }
                     }
-                }
-                3->{
-                    for (i in 0 until kills) {
-                        Dire.heroes.removeAt(Random().nextInt(Dire.heroes.size))
+                    3 -> {
+                        for (i in 0 until kills) {
+                            Dire.heroes.removeAt(Random().nextInt(Dire.heroes.size))
+                        }
                     }
-                }
-                4->{
-                    for (i in 0 until kills) {
-                        Dire.heroes.removeAt(Random().nextInt(Dire.heroes.size))
+                    4 -> {
+                        for (i in 0 until kills) {
+                            Dire.heroes.removeAt(Random().nextInt(Dire.heroes.size))
+                        }
                     }
                 }
             }
+            return narrar(narrador, evento)
+        } else {
+            return null
         }
     }
-    fun ocurrieronCincoKills(equipo: Equipo){
+    fun ocurrieronCincoKills(esRadiant: Boolean):String{
         var evento = "5kills"
         narrador.narrar(evento)
-        if (equipo==Radiant){
+        if (!esRadiant){
             for (i in 0 until 5) {
                 Radiant.heroes.removeAt(Random().nextInt(Radiant.heroes.size))
             }
@@ -76,28 +81,57 @@ class Partido<T> (
                 Dire.heroes.removeAt(Random().nextInt(Dire.heroes.size))
             }
         }
+        return narrar(narrador,evento)
     }
-    fun matanUnaTorre(equipo: Equipo){
+    fun matanUnaTorre(esRadiant: Boolean):String{
         val evento ="torre"
         narrador.narrar(evento)
-        if (equipo==Radiant){
+        if (!esRadiant){
             Radiant.torres.removeAt(Random().nextInt(Radiant.torres.size))
         }else{
             Dire.torres.removeAt(Random().nextInt(Dire.torres.size))
         }
+        return narrar(narrador,evento)
     }
-    fun radiantGana(){
+    fun radiantGana():String{
         val evento="radiant"
-        narrador.narrar(evento)
+        return narrar(narrador,evento)
     }
-    fun direGana(){
+    fun direGana():String{
         val evento= "dire"
-        narrador.narrar(evento)
+        return narrar(narrador,evento)
     }
     fun anadirHeroeRadiant(heroe:Heroe){
         Radiant.heroes.add(heroe)
     }
-    fun anadirHeoreDire(heroe: Heroe){
+    fun anadirHeroeDire(heroe: Heroe){
         Dire.heroes.add(heroe)
     }
+    fun hayTorresRadiant():Boolean{
+        if (Radiant.torres.size>0){
+            return true
+        }
+        return false
+    }
+    fun hayTorresDire():Boolean{
+        if (Dire.torres.size>0){
+            return true
+        }
+        return false
+    }
+    fun hayHeroesRadiant():Boolean{
+        if (Radiant.heroes.size>0){
+            return true
+        }
+        return false
+    }
+    fun hayHeroesDire():Boolean{
+        if (Dire.heroes.size>0){
+            return true
+        }
+        return false
+    }
+}
+fun narrar(narrable: Narrable,evento:String):String{
+    return narrable.narrar(evento)
 }

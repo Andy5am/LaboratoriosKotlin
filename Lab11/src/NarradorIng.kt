@@ -1,7 +1,4 @@
-class NarradorIng(
-        var nombre: String,
-        var idioma: String
-):Narrable {
+class NarradorIng():Narrable {
     override fun narrar(evento:String):String{
         var mensaje = ""
         if (evento == "bienvenida") {
