@@ -1,5 +1,5 @@
 import java.lang.Exception
-
+// funciones para los menus
 fun menuInicial():String{
     return """
         MENU:
@@ -15,7 +15,7 @@ fun menuFinal():String{
     3. Matan ancient
     """.trimIndent()
 }
-
+//Creacion de los heroes
 fun main(args: Array<String>){
     val Heroes:ArrayList<Heroe> = arrayListOf(
     Heroe("Doom","Fuerza"),
@@ -38,15 +38,17 @@ fun main(args: Array<String>){
     Heroe("Lion","Inteligencia"),
     Heroe("Huskar","Fuerza"),
     Heroe("Pugna","Inteligencia"))
-
+//menu para elejir al narrador
     println("""
         En que idioma desea al narrador?
         1.espanol
         2.ingles
     """.trimIndent())
     val idioma = readLine()!!
+    //inicializar al narrador y partido
     val narrador:Narrable = NarradorIng()
     val miPartido = Partido(narrador)
+    //segun lo que elija el usuario se cambia el narrador espanol es el narrador por defecto
     if (idioma=="2"){
         val miNarrador = NarradorIng()
         miPartido.narrador=miNarrador
@@ -54,16 +56,18 @@ fun main(args: Array<String>){
         val miNarrador = NarradorEsp()
         miPartido.narrador=miNarrador
     }
-
+//Bienvenida del narrador
     println(miPartido.bienvenida())
-
+//Draft para seleccionar a los heroes
     for (i in 0 until 5){
+        //se muestra la lista de heroes y se pregunta por cual desea
         println("Seleccion heores Radiant")
         var numero = 1
         for (i in Heroes){
             println("$numero: $i")
             numero++
         }
+        //ciclo por si escribe un valor incorrecto
         var elejido = false
         do {
             println("Elija su heroe")
@@ -95,9 +99,12 @@ fun main(args: Array<String>){
             }
         }while (!elejido)
     }
+    //narrador inicia el juego
     println(miPartido.empezarJuego())
+    //ciclo mientras no haya ganador
     var ganador = false
     do {
+        //condiciones para el menu a imprimir
         if (miPartido.hayTorresRadiant() && miPartido.hayTorresDire()){
             println(menuInicial())
         }else{
@@ -106,14 +113,18 @@ fun main(args: Array<String>){
         var opcion = readLine()!!
         var esRadiant:Boolean = true
         when (opcion){
+            //si el usuario elije la opcion 1 se le pregunta si el equipo radiant mato
             "1"->{
                 println("Fue Radiant quien mato? si/no")
                 var confirmar = readLine()!!
                 esRadiant = confirmar != "si"
+                // Se le pregunta cuantos mato
                 if (confirmar=="si"||confirmar== "no") {
                     if ((!esRadiant && miPartido.hayHeroesRadiant()) || (esRadiant && miPartido.hayHeroesDire())) {
                         println("Cuantas muertes? 1-5")
+                        //programacion defensiva por si no escribe un numero o la cantidad de heroes que tiene el equipo enemigo
                         try {
+                            //Dependiendo de la cantidad de heroes y el equipo se muestra un diferente mensaje
                             var muertes = readLine()!!.toInt()
                             if (muertes == 1) {
                                 println(miPartido.ocurrioUnKill(esRadiant))
@@ -124,6 +135,7 @@ fun main(args: Array<String>){
                             } else {
                                 println("Escriba un numero dentro del parametro indicado")
                             }
+                            //error si escribe algo incorrecto
                         } catch (e: Exception) {
                             println("No hay esa cantidad de heroes")
                         }
@@ -135,9 +147,11 @@ fun main(args: Array<String>){
                 }
             }
             "2"->{
+                //si elige la opcion 2 se le pregunta si radiant mato
                 println("Fue Radiant quien mato? si/no")
                 var confirmar = readLine()!!
                 esRadiant = confirmar!= "si"
+                //en base a la respuesta el se elimina la torre y el narrador muestra mensaje
                 if (confirmar=="si"||confirmar == "no") {
                     if ((!esRadiant && miPartido.hayTorresRadiant()) || (esRadiant && miPartido.hayTorresDire())) {
                         println(miPartido.matanUnaTorre(esRadiant))
@@ -149,8 +163,10 @@ fun main(args: Array<String>){
                 }
             }
             "3"->{
+                //si elige la opcion 3 cuando ya este disponible
                 println("Fue Radiant quien gano? si/no")
                 var confirmar = readLine()!!
+                // en base a su respuesta y al ver que el equipo contrario no tenga torres gana el juego o se continua
                 esRadiant = confirmar!= "si"
                 if (confirmar =="si" || confirmar!== "no"){
                     if (!esRadiant){
@@ -168,6 +184,6 @@ fun main(args: Array<String>){
                     println("Escriba si o no")
                 }
             }
-        }
+        }//condicion para terminar el juego
     }while (!ganador)
 }

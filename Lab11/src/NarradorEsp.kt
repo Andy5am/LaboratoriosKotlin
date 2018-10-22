@@ -1,5 +1,6 @@
-class NarradorEsp():Narrable{
+class NarradorEsp():Narrable{//hereda de la interfaz
     override fun narrar(evento:String):String {
+    //condiciones de los diferentes mensaje segun evento
         var mensaje = ""
         if (evento == "bienvenida") {
             mensaje = "Bienvenido a Dota 2"

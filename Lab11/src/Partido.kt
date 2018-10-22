@@ -1,11 +1,12 @@
 import java.util.*
-import kotlin.math.E
-
+//parametro generico T
 class Partido<T> (
         var narrador:T
-) where T : Narrable{
+) where T : Narrable{//Se define que tiene que ser un narrador
+    //se anaden sus equipos
     var Radiant:Equipo = Equipo()
     var Dire:Equipo = Equipo()
+    //diferentes metodos para los distintos eventos
     fun bienvenida():String{
         var evento = "bienvenida"
         return narrar(narrador,evento)
@@ -14,6 +15,7 @@ class Partido<T> (
         var evento = "empezar"
         return narrar(narrador,evento)
     }
+    //para los eventos de kills se eliminan los heroes/torres eliminados
     fun ocurrioUnKill(esRadiant:Boolean):String{
         var evento = "kill"
         if (esRadiant){
@@ -28,6 +30,7 @@ class Partido<T> (
             var evento = "kills"
             if (esRadiant) {
                 when (kills) {
+                    //heroes eliminados segun lo que ponga el usuario
                     2 -> {
                         for (i in 0 until kills) {
                             Radiant.heroes.removeAt(Random().nextInt(Radiant.heroes.size))
@@ -93,12 +96,13 @@ class Partido<T> (
         }
         return narrar(narrador,evento)
     }
+    //metodos para determinar ganador con condiciones para que no hagan trampa
     fun radiantGana():String{
         val evento="radiant"
         if (!hayTorresDire()) {
             return narrar(narrador, evento)
         }else{
-            return "Todavia hay torres"
+            return "Todavia hay torres. No haga trampa"
         }
     }
     fun direGana():String{
@@ -106,15 +110,17 @@ class Partido<T> (
         if (!hayTorresRadiant()) {
             return narrar(narrador, evento)
         }else{
-            return "Todavia hay torres"
+            return "Todavia hay torres. No haga trampa"
         }
     }
+    //metodos para anadir los heores al incio en el draft
     fun anadirHeroeRadiant(heroe:Heroe){
         Radiant.heroes.add(heroe)
     }
     fun anadirHeroeDire(heroe: Heroe){
         Dire.heroes.add(heroe)
     }
+    //metodos para ver que hayan torres y asi poder eliminar mas o determinar si puede ganar
     fun hayTorresRadiant():Boolean{
         if (Radiant.torres.size>0){
             return true
@@ -127,6 +133,7 @@ class Partido<T> (
         }
         return false
     }
+    //metodos para ver si hay heroes y asi ver si puede matar mas
     fun hayHeroesRadiant():Boolean{
         if (Radiant.heroes.size>0){
             return true
@@ -140,6 +147,7 @@ class Partido<T> (
         return false
     }
 }
+//metodo para la interfaz para los narradores
 fun narrar(narrable: Narrable,evento:String):String{
     return narrable.narrar(evento)
 }
